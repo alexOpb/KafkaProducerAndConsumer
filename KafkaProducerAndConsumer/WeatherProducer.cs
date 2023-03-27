@@ -12,6 +12,12 @@ public class WeatherProducer : IWeatherProducer
     }
     public void Publish(WeatherForecast weatherForecast)
     {
-        throw new NotImplementedException();
+        var message = new Message<int, WeatherForecast>
+        {
+            Key = weatherForecast.Id,
+            Value = weatherForecast
+        };
+
+        _producer.Produce("topic_name_place_holder", message);
     }
 }
