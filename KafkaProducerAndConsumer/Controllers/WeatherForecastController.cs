@@ -12,10 +12,12 @@ public class WeatherForecastController : ControllerBase
     };
 
     private readonly ILogger<WeatherForecastController> _logger;
+    private readonly IWeatherProducer _producer;
 
-    public WeatherForecastController(ILogger<WeatherForecastController> logger)
+    public WeatherForecastController(ILogger<WeatherForecastController> logger, IWeatherProducer producer)
     {
         _logger = logger;
+        _producer = producer;
     }
 
     [HttpGet(Name = "GetWeatherForecast")]
