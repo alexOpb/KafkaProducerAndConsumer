@@ -18,7 +18,7 @@ builder.Services.AddSingleton<IProducer<int, WeatherForecast>>(
             BootstrapServers = "localhost:9092"
         };
         var producerBuilder = new ProducerBuilder<int, WeatherForecast>(config);
-        
+        producerBuilder.SetValueSerializer(new JsonSerializer<WeatherForecast>());
         return producerBuilder.Build();
     });
 
