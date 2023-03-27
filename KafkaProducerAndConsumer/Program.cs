@@ -1,3 +1,4 @@
+using Confluent.Kafka;
 using KafkaProducerAndConsumer;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,17 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IWeatherProducer, WeatherProducer>();
+builder.Services.AddSingleton<IProducer<int, WeatherForecast>>(
+    provider =>
+    {
+        var config = new ProducerConfig()
+        {
+            BootstrapServers = "localhost:9092"
+        };
+        var producerBuilder = new ProducerBuilder<int, WeatherForecast>(config);
+        
+        return producerBuilder.Build();
+    });
 
 var app = builder.Build();
 
