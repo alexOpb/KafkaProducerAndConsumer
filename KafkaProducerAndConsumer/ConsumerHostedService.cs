@@ -13,16 +13,19 @@ public class ConsumerHostedService : BackgroundService
         _logger = logger;
     }
 
-    protected override Task ExecuteAsync(CancellationToken stoppingToken)
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         _consumer.Subscribe("topic_name_place_holder");
+        
+        await Task.Yield();
+        
         while (!stoppingToken.IsCancellationRequested)
         {
             var message = _consumer.Consume(stoppingToken);
             _logger.LogInformation("MessageId = {Id}, Value {Value}", message.Message.Key, message.Message.Value);
         }
+
         _consumer.Unsubscribe();
-        return Task.CompletedTask;
     }
 
 }
