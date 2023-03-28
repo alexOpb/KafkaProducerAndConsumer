@@ -10,6 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IWeatherProducer, WeatherProducer>();
+builder.Services.AddHostedService<ConsumerHostedService>();
 builder.Services.AddSingleton<IProducer<int, WeatherForecast>>(
     provider =>
     {
