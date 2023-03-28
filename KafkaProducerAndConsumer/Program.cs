@@ -22,6 +22,20 @@ builder.Services.AddSingleton<IProducer<int, WeatherForecast>>(
         producerBuilder.SetValueSerializer(new JsonSerializer<WeatherForecast>());
         return producerBuilder.Build();
     });
+builder.Services.AddSingleton<IConsumer<int, WeatherForecast>>(
+    provider =>
+    {
+        var config = new ConsumerConfig()
+        {
+            BootstrapServers = "localhost:9092",
+            GroupId = "WeatherConsumer",
+            AutoOffsetReset = AutoOffsetReset.Earliest,
+            EnableAutoCommit = false
+        };
+        var producerBuilder = new ConsumerBuilder<int, WeatherForecast>(config);
+        producerBuilder.SetValueDeserializer(new JsonSerializer<WeatherForecast>());
+        return producerBuilder.Build();
+    });
 
 var app = builder.Build();
 
